@@ -5,14 +5,15 @@ const PersonalQuestions = ({ questions, onSubmit }) => {
   const [responses, setResponses] = useState(Array(questions.length).fill(''));
 
   const handleInputChange = (index, value) => {
-    const newResponses = [...responses];
-    newResponses[index] = value;
-    setResponses(newResponses);
+    const updatedResponses = responses.map((response, i) => 
+      i === index ? value : response
+    );
+    setResponses(updatedResponses);
   };
 
   const handleSubmit = () => {
     // Optionally add validation to ensure all responses are filled
-    if (responses.some(response => response === '')) {
+    if (responses.includes('')) {
       alert('Please answer all questions before submitting.');
       return;
     }

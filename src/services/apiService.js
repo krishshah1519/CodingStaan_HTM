@@ -8,13 +8,18 @@ const apiService = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ responses: generalResponses }),
       });
+
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-      return response.json();
+
+      // Safely handle JSON parsing
+      const data = await response.json();
+      return data;
+      
     } catch (error) {
       console.error('Error fetching personalized questions:', error);
-      throw error;  // Re-throw the error for the caller to handle
+      throw error;
     }
   },
 
@@ -25,13 +30,18 @@ const apiService = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ responses: personalResponses }),
       });
+
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-      return response.json();
+
+      // Safely handle JSON parsing
+      const data = await response.json();
+      return data;
+
     } catch (error) {
       console.error('Error fetching quiz results:', error);
-      throw error;  // Re-throw the error for the caller to handle
+      throw error;
     }
   }
 };

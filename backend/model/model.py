@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_score
-from sklearn.manifold import TSNE
 from sklearn.cluster import AgglomerativeClustering
 import joblib  # To save/load the model
 
@@ -45,26 +43,37 @@ def get_career_recommendations(cluster_number):
 
 # Perform t-SNE for dimensionality reduction and visualization (optional, for analysis purposes)
 def perform_tsne(x, n_components=3):
+    from sklearn.manifold import TSNE
     tsne = TSNE(n_components=n_components, random_state=42)
     x_tsne = tsne.fit_transform(x)
     return x_tsne
 
 # Save the trained model to disk
-def save_model(model, filepath='backend/model/kmeans_model.pkl'):
+def save_model(model, filepath='backend/model/model.pkl'):
     joblib.dump(model, filepath)
 
 # Load the model from disk
-def load_model(filepath='backend/model/kmeans_model.pkl'):
+def load_model(filepath='backend/model/model.pkl'):
     model = joblib.load(filepath)
     return model
 
+# Preprocessing the user answers for the model
+def preprocess_answers(answers):
+    # Convert answers into the appropriate format
+    # Adjust based on your model's expected input format
+    # For example, you might need to handle missing values or standardize features
+    return [answers.get(key, 0) for key in sorted(answers)]
+
 # Main function for clustering and prediction
 def predict_career(input_data):
-    # Load trained model (or train if not available)
-    model = load_model('backend/model/kmeans_model.pkl')
+    # Preprocess the input data
+    processed_data = preprocess_answers(input_data)
+    
+    # Load trained model
+    model = load_model('backend/model/model.pkl')
     
     # Convert input data into DataFrame
-    input_df = pd.DataFrame([input_data])
+    input_df = pd.DataFrame([processed_data])
     
     # Assign cluster to the input data
     if hasattr(model, 'predict'):

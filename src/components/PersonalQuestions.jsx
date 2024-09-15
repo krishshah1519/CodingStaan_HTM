@@ -1,9 +1,21 @@
 import React, { useState } from 'react';
 
 const PersonalQuestions = ({ questions, onSubmit }) => {
-  const [responses, setResponses] = useState([]);
+  // Initialize responses with an empty string for each question
+  const [responses, setResponses] = useState(Array(questions.length).fill(''));
+
+  const handleInputChange = (index, value) => {
+    const newResponses = [...responses];
+    newResponses[index] = value;
+    setResponses(newResponses);
+  };
 
   const handleSubmit = () => {
+    // Optionally add validation to ensure all responses are filled
+    if (responses.some(response => response === '')) {
+      alert('Please answer all questions before submitting.');
+      return;
+    }
     onSubmit(responses);
   };
 
@@ -14,11 +26,8 @@ const PersonalQuestions = ({ questions, onSubmit }) => {
           <label>{question}</label>
           <input
             type="text"
-            onChange={(e) => {
-              const newResponses = [...responses];
-              newResponses[index] = e.target.value;
-              setResponses(newResponses);
-            }}
+            value={responses[index]}  // Controlled input
+            onChange={(e) => handleInputChange(index, e.target.value)}  // Update state on change
           />
         </div>
       ))}

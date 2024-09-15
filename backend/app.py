@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS to allow requests from your frontend
 
 # Load the pre-trained ML model
-model = joblib.load('backend/model/model.pkl')  # Update the path to your model if necessary
+model = joblib.load('model/model.pkl')  # Update the path to your model if necessary
 
 # OpenAI API key
 openai.api_key = 'YOUR_OPENAI_API_KEY'  # Replace with your actual OpenAI API key
